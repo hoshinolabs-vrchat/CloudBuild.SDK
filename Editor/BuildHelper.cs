@@ -15,6 +15,7 @@ namespace CloudBuild.SDK
         public static void AssignId()
         {
             var pipelineManager = GameObject.FindObjectOfType<PipelineManager>();
+            pipelineManager.contentType = PipelineManager.ContentType.world;
             if (string.IsNullOrEmpty(pipelineManager.blueprintId))
             {
                 pipelineManager.AssignId();
