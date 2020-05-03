@@ -6,7 +6,7 @@ using UnityEngine;
 using VRC.Core;
 using VRCSDK2;
 
-namespace CloudBuild
+namespace CloudBuild.SDK
 {
     public static class BuildHelper
     {
