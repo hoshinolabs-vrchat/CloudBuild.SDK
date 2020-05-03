@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRCSDK2;
 
-namespace CloudBuild
+namespace CloudBuild.SDK
 {
     [RequireComponent(typeof(VRC_SceneDescriptor))]
     public class PublishWorldSettings : MonoBehaviour
