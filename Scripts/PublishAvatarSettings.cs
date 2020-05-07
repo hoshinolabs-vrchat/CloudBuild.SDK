@@ -5,8 +5,8 @@ using VRCSDK2;
 
 namespace CloudBuild.SDK
 {
-    [RequireComponent(typeof(VRC_SceneDescriptor))]
-    public class PublishWorldSettings : MonoBehaviour
+    [RequireComponent(typeof(VRC_AvatarDescriptor))]
+    public class PublishAvatarSettings : MonoBehaviour
     {
         [SerializeField]
         string _name = string.Empty;
@@ -15,14 +15,6 @@ namespace CloudBuild.SDK
         [Multiline(4)]
         string _description = string.Empty;
         public string description => _description;
-        [SerializeField]
-        [Range(1, 64)]
-        short _capacity = 8;
-        public short capacity => _capacity;
-
-        [SerializeField]
-        string[] _tags = null;
-        public string[] tags => _tags;
 
         [SerializeField]
         Texture2D _thumbnail = null;

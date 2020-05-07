@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -10,35 +11,72 @@ namespace CloudBuild.SDK
 {
     public static class BuildHelper
     {
-        const string assignIdMenuItem = "CloudBuild/AssignID";
+        const string assignIdMenuItem = "CloudBuild/Assign ID";
         [MenuItem(assignIdMenuItem, false, 1000)]
         public static void AssignId()
         {
-            var pipelineManager = GameObject.FindObjectOfType<PipelineManager>();
-            pipelineManager.contentType = PipelineManager.ContentType.world;
-            if (string.IsNullOrEmpty(pipelineManager.blueprintId))
-            {
-                pipelineManager.AssignId();
-                EditorUtility.SetDirty(pipelineManager);
-                EditorSceneManager.MarkSceneDirty(pipelineManager.gameObject.scene);
-                EditorSceneManager.SaveScene(pipelineManager.gameObject.scene);
-            }
+            var gameObject = TargetGameObject();
+            var pipelineManager = gameObject.GetComponent<PipelineManager>();
+            pipelineManager.contentType = ContentType(pipelineManager.gameObject);
+            pipelineManager.AssignId();
+            EditorUtility.SetDirty(pipelineManager);
+            EditorSceneManager.MarkSceneDirty(pipelineManager.gameObject.scene);
+            EditorSceneManager.SaveScene(pipelineManager.gameObject.scene);
         }
+
         [MenuItem(assignIdMenuItem, true)]
         static bool CanAssignId()
         {
-            if (GameObject.FindObjectOfType<VRC_SceneDescriptor>() == null)
+            var gameObject = TargetGameObject();
+
+            if (gameObject == null)
             {
                 return false;
             }
 
-            var pipelineManager = GameObject.FindObjectOfType<PipelineManager>();
+            var pipelineManager = gameObject.GetComponent<PipelineManager>();
             if (!string.IsNullOrEmpty(pipelineManager.blueprintId))
             {
                 return false;
             }
 
             return true;
+        }
+
+        static GameObject TargetGameObject()
+        {
+            var gameObjects = Selection.gameObjects;
+            var gameObject = gameObjects.FirstOrDefault();
+
+            if(1 < gameObjects.Length)
+            {
+                return null;
+            }
+
+            if (gameObjects.Length == 1 && gameObject.GetComponent<VRC_AvatarDescriptor>() == null)
+            {
+                return null;
+            }
+
+            if (gameObjects.Length == 0)
+            {
+                gameObject = GameObject.FindObjectOfType<VRC_SceneDescriptor>().gameObject;
+                if (gameObject == null)
+                {
+                    return null;
+                }
+            }
+
+            return gameObject;
+        }
+
+        static PipelineManager.ContentType ContentType(GameObject gameObject)
+        {
+            if (gameObject.GetComponent<VRC_SceneDescriptor>())
+            {
+                return PipelineManager.ContentType.world;
+            }
+            return PipelineManager.ContentType.avatar;
         }
     }
 }
