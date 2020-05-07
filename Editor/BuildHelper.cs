@@ -53,18 +53,23 @@ namespace CloudBuild.SDK
                 return null;
             }
 
-            if (gameObjects.Length == 1 && gameObject.GetComponent<VRC_AvatarDescriptor>() == null)
+            if (gameObjects.Length == 1)
             {
-                return null;
+                var descriptor = gameObject.GetComponent<VRC_AvatarDescriptor>();
+                if(descriptor == null)
+                {
+                    return null;
+                }
             }
 
             if (gameObjects.Length == 0)
             {
-                gameObject = GameObject.FindObjectOfType<VRC_SceneDescriptor>().gameObject;
-                if (gameObject == null)
+                var descriptor = GameObject.FindObjectOfType<VRC_SceneDescriptor>();
+                if(descriptor == null)
                 {
                     return null;
                 }
+                gameObject = descriptor.gameObject;
             }
 
             return gameObject;
