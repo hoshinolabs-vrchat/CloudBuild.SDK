@@ -17,6 +17,10 @@ namespace CloudBuild.SDK
         public string description => _description;
 
         [SerializeField]
+        int _version = 0;
+        public int version => _version;
+
+        [SerializeField]
         Texture2D _thumbnail = null;
         public Texture2D thumbnail => _thumbnail;
     }

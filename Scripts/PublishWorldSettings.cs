@@ -21,6 +21,10 @@ namespace CloudBuild.SDK
         public short capacity => _capacity;
 
         [SerializeField]
+        int _version = 0;
+        public int version => _version;
+
+        [SerializeField]
         string[] _tags = null;
         public string[] tags => _tags;
 
