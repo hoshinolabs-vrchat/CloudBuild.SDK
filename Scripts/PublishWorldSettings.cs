@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRCSDK2;
+using VRC.SDKBase;
 
 namespace CloudBuild.SDK
 {

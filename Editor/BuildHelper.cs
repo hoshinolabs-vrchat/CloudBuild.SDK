@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using VRC.Core;
-using VRCSDK2;
+using VRC.SDKBase;
 
 namespace CloudBuild.SDK
 {

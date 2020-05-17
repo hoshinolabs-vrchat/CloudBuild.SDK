@@ -6,7 +6,7 @@ using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
-using VRCSDK2;
+using VRC.SDKBase;
 
 namespace CloudBuild.SDK
 {
