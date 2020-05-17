@@ -1,5 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using VRCSDK2;
 
@@ -22,6 +27,26 @@ namespace CloudBuild.SDK
 
         [SerializeField]
         Texture2D _thumbnail = null;
-        public Texture2D thumbnail => _thumbnail;
+        public Texture2D thumbnail
+        {
+            set => _thumbnail = value;
+            get => _thumbnail;
+        }
+
+#if UNITY_EDITOR
+        public void TakeThumbnail()
+        {
+            var imageCapture = GameObject.FindObjectOfType<CameraImageCapture>();
+            var go = imageCapture ? Instantiate(imageCapture.gameObject) : GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("VRCCam"));
+            imageCapture = go.GetComponent<CameraImageCapture>();
+            string path = imageCapture.TakePicture(savePath: Application.dataPath);
+            DestroyImmediate(go);
+
+            AssetDatabase.Refresh();
+            var dir = new Uri(Path.Combine(Application.dataPath, ".."));
+            path = dir.MakeRelativeUri(new Uri(path)).ToString();
+            thumbnail = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        }
+#endif
     }
 }
