@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UniRx.Async;
 #if UNITY_EDITOR
 using UnityEditorInternal;
 #endif
@@ -12,19 +11,23 @@ namespace HoshinoLabs.CloudBuild.SDK
     [RequireComponent(typeof(Camera))]
     public class VRCCamHelper : MonoBehaviour
     {
-        private async void Start()
+        private void Start()
         {
-            await UniTask.DelayFrame(1);
+            StartCoroutine(ApplyVRCCam());
+        }
 
-            var go = GameObject.Find("VRCCam");
-            if (go != null)
-            {
-                ComponentUtility.CopyComponent(transform);
-                ComponentUtility.PasteComponentValues(go.transform);
+        IEnumerator ApplyVRCCam()
+        {
+            yield return null;
 
-                ComponentUtility.CopyComponent(GetComponent<Camera>());
-                ComponentUtility.PasteComponentValues(go.GetComponent<Camera>());
-            }
+            var vrccam = GameObject.Find("VRCCam");
+            if (!vrccam)
+                yield break;
+
+            ComponentUtility.CopyComponent(transform);
+            ComponentUtility.PasteComponentValues(vrccam.transform);
+            ComponentUtility.CopyComponent(GetComponent<Camera>());
+            ComponentUtility.PasteComponentValues(vrccam.GetComponent<Camera>());
         }
     }
 }
